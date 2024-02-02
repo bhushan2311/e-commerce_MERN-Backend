@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bhushan2311/https-github.com-bhushan2311-e-commerce_MERN-Backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^8.1.1",
     "nodemon": "^3.0.3"
