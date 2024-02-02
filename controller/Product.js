@@ -15,6 +15,19 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+exports.fetchProductById = async (req,res)=>{
+    // console.log(req.params);
+    const {id} = req.params;
+    // console.log("----------",id);
+    try {
+        const productbyId = await Product.findById(id); 
+        console.log(productbyId);
+        res.status(200).json(productbyId);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
 //  API Key after filter =>
 // http://localhost:8080/products?category=smartphones&_sort=rating&_order=desc&_page=1&_limit=10
 
