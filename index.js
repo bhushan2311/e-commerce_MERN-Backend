@@ -9,7 +9,9 @@ const server = express();
 const cors = require('cors');
 
 // middleware
-server.use(cors());
+server.use(cors({
+    exposedHeaders:['X-Total-Count']
+}));
 server.use(express.json());  // to parse req.body
 server.use('/products', productsRouters.router);        // why .router bcz it exports as object
 server.use('/brands', brandsRouter.router);
