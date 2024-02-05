@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
         required:true,
         default:'user'
     },
-    addresses:{
+    address:{
         type:[mongoose.Schema.Types.Mixed],
         required:true
     },
