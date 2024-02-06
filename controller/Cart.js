@@ -24,3 +24,25 @@ exports.addToCart = async (req, res)=>{
     }
 }
 
+exports.deleteFromCart = async (req, res)=>{
+    const {id} = req.params;
+    try {
+        const doc = await Cart.findByIdAndDelete(id);
+        res.status(200).json(doc);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
+exports.updateCart = async (req,res)=>{
+    const {id} = req.params;
+    try {
+        const cart = await Cart.findByIdAndUpdate(id,req.body,{
+            new:true
+        })
+        const result = await cart.populate('product')
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
