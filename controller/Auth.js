@@ -20,14 +20,14 @@ exports.createUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   try {
     const user = await User.findOne(
-      { email: req.body.email },
-      "id email password"
+      { email: req.body.email }
     );
-    // console.log(user);
+    
     if (!user) {
       res.status(400).json({ message: "Invalid email" });
     } else if (user.password === req.body.password) {
       res.status(201).json(user);
+      // console.log("auth user here--",user);
     } else {
       res.status(400).json({ message: "invalid password" });
     }
