@@ -7,7 +7,7 @@ exports.createUser = async (req, res) => {
       const user = new User(req.body);
       const doc = await user.save();
       // console.log('------Categories------',categories);
-      res.status(200).json(doc);
+      res.status(200).json({id:doc.id});
     }
     else{
         res.status(400).json({message:"Email already exist!!"});
@@ -25,10 +25,13 @@ exports.loginUser = async (req, res) => {
     
     if (!user) {
       res.status(400).json({ message: "Invalid email" });
-    } else if (user.password === req.body.password) {
-      res.status(201).json(user);
+    } 
+    else if (user.password === req.body.password) {
+
+      res.status(201).json({id:user.id, email:user.email});
       // console.log("auth user here--",user);
-    } else {
+    } 
+    else {
       res.status(400).json({ message: "invalid password" });
     }
   } catch (error) {
