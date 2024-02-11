@@ -45,9 +45,13 @@ server.use("/orders", orderRouter.router);
 
 // Password Strategies 'local'
 passport.use(
-    new LocalStrategy(async function (username, password, done) {
+    new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    },async function (username, password, done) {
         try {
-            const user = await User.findOne({ email: username });
+            const user = await User.findOne({ email: username }).exec();
+            console.log({user});
             if (!user) {
               return done(null, false, { message: "Invalid email" });
             } else if (user.password === password) {
