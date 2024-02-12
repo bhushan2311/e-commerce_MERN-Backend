@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
         unique:true
     },
     password:{
-        type:String,
+        type:Buffer,
         required:true
     },
     role:{
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     orders:{
         type:[mongoose.Schema.Types.Mixed]
     },
+    salt:Buffer
 });
 
 /* In Mongoose, a virtual is a property that is not stored in MongoDB. Virtuals are typically used for computed properties on documents. */
