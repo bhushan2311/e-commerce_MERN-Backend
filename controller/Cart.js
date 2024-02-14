@@ -1,11 +1,11 @@
 const { Cart } = require("../model/Cart");
 
-// 'http://localhost:8080/cart?user='
+// 'http://localhost:8080/cart'
 exports.fetchCartByUser = async (req,res)=>{
-    const {user} = req.query;           // yeilds user id of which is passed in url
+    const {id} = req.user;           // for req.query yeilds user id of which is passed in url
     // console.log('ha wala user---',user);
     try {
-        const cartItem = await Cart.find({user:user}).populate('product');
+        const cartItem = await Cart.find({user:id}).populate('product');
         // console.log('------cartItem------',cartItem);
         res.status(200).json(cartItem);
     } catch (error) {
@@ -14,7 +14,8 @@ exports.fetchCartByUser = async (req,res)=>{
 }
 
 exports.addToCart = async (req, res)=>{
-    const cart = new Cart(req.body);
+    const {id} = req.user;
+    const cart = new Cart({...req.body, user:id});
     try {
         const doc = await cart.save();
         const result = await doc.populate('product')
