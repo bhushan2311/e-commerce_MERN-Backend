@@ -86,7 +86,7 @@ passport.use(
               });
             }
             const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-            done(null, token); // this will send to serelizer
+            done(null, {token}); // this will send to serelizer
           }
         );
       } catch (error) {
