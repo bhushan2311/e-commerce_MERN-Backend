@@ -30,6 +30,8 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = SECRET_KEY;
 
 // --------- middleware ------------
+
+server.use(express.static('build'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
 server.use(
   session({
     secret: "keyboard cat",
@@ -139,9 +141,7 @@ async function main() {
   }
 }
 main();
-server.get("/", (req, res) => {
-  res.json({ status: "success" });
-});
+
 
 server.listen(8080, () => {
   console.log("Server started");
