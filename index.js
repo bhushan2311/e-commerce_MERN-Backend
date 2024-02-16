@@ -18,20 +18,23 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 var crypto = require("crypto");
-const { isAuth, sanitizeUser } = require("./services/common");
+const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 
 const jwt = require("jsonwebtoken");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
+const cookieParser = require('cookie-parser');
 
 const SECRET_KEY = "SECRETKEY";
 var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();      // for postman we use bearer token
+opts.jwtFromRequest = cookieExtractor;      
 opts.secretOrKey = SECRET_KEY;
 
 // --------- middleware ------------
-
-server.use(express.static('build'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
+server.use(cookieParser());
+// server.use(express.static('build copy'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
 server.use(
   session({
     secret: "keyboard cat",
@@ -103,7 +106,7 @@ passport.use(
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
       console.log("jwt_payload:", jwt_payload);         // jwt_payload.sub is undefined here
-      const user = await User.findOne({ id: jwt_payload.sub });
+      const user = await User.findById(jwt_payload.id);
       if (user) {
         return done(null, sanitizeUser(user)); // this calls serializer
       } else {
