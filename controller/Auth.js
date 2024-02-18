@@ -65,6 +65,11 @@ exports.loginUser = async (req, res) => {
     .json(req.user.token);
 };
 
-exports.checkUser = async (req, res) => {
-  res.json({status:"success",user:req.user});
+exports.checkAuth = async (req, res) => {
+  if(res.json){
+    res.status(200).json(req.user);
+  }
+  else{
+    res.sendStatus(401);
+  }
 };

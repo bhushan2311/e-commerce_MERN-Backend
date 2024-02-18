@@ -11,13 +11,13 @@ exports.createOrder = async (req, res)=>{
     }
 }
 
-// 'http://localhost:8080/orders?user='
+// 'http://localhost:8080/orders/own'
 exports.fetchOrdersByUser = async (req,res)=>{
-    const {user} = req.query;           // yeilds user id of which is passed in url
-    // console.log('ha wala user---',user);
+    const {id} = req.user;          // for req.query yeilds user id of which is passed in url
+    console.log('ha wala user---',req.user);
     try {
-        const order = await Order.find({user:user});
-        // console.log('------order------',order);
+        const order = await Order.find({user:id});
+        console.log('------order------',order);
         res.status(200).json(order);
     } catch (error) {
         res.status(400).json(error);

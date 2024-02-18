@@ -5,5 +5,5 @@ const router =express.Router();
 
 //   /products is already added in basee path
 router.post('/', createOrder);
-router.get('/', fetchOrdersByUser);             // to check why not '/:id'
+router.get('/own/', fetchOrdersByUser);            
 exports.router = router;
