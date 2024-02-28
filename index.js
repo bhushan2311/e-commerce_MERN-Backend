@@ -2,6 +2,10 @@ const express = require("express");
 const { mongoose } = require("mongoose");
 const cors = require("cors");
 
+require('dotenv').config()
+
+// console.log(process.env);
+
 const { createProduct } = require("./controller/Product");
 const productsRouters = require("./routes/Products");
 const brandsRouter = require("./routes/Brands");
@@ -24,13 +28,14 @@ const jwt = require("jsonwebtoken");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const cookieParser = require('cookie-parser');
+const { log } = require("console");
 
 const SECRET_KEY = "SECRETKEY";
 var opts = {};
 
 // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();      // for postman we use bearer token
 opts.jwtFromRequest = cookieExtractor;      
-opts.secretOrKey = SECRET_KEY;
+opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 // --------- middleware ------------
 server.use(cookieParser());
@@ -90,7 +95,7 @@ passport.use(
                 message: "Incorrect username or password.",
               });
             }
-            const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
+            const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
             done(null, {token}); // this will send to serelizer
           }
         );
@@ -105,7 +110,7 @@ passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
-      console.log("jwt_payload:", jwt_payload);         // jwt_payload.sub is undefined here
+    //   console.log("jwt_payload:", jwt_payload);  // jwt_payload: { id: '65ca426d9aa370aa20214410', iat: 1709135116 }       
       const user = await User.findById(jwt_payload.id);
       if (user) {
         return done(null, sanitizeUser(user)); // this calls serializer
@@ -137,7 +142,7 @@ passport.deserializeUser(function (user, cb) {
 
 async function main() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/e-commerce");
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log("Database Connected");
   } catch (error) {
     console.log(error);
@@ -146,6 +151,6 @@ async function main() {
 main();
 
 
-server.listen(8080, () => {
+server.listen(process.env.PORT, () => {
   console.log("Server started");
 });
