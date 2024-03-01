@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
         type:[mongoose.Schema.Types.Mixed]
     },
     salt:Buffer
-});
+},{timestamps:true});
 
 /* In Mongoose, a virtual is a property that is not stored in MongoDB. Virtuals are typically used for computed properties on documents. */
 const virtuals = userSchema.virtual('id');

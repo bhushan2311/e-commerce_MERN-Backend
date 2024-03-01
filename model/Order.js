@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },
-});
+},{timestamps:true});
 
 /* In Mongoose, a virtual is a property that is not stored in MongoDB. Virtuals are typically used for computed properties on documents. */
 const virtuals = orderSchema.virtual("id");
