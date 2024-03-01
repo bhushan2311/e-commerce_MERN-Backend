@@ -4,14 +4,14 @@ const { Product } = require("../model/Product");
 exports.createProduct = async (req, res) => {
   // this product we have to get from API body
   const product = new Product(req.body);
-  console.log(product);
+  // console.log(product);
   try {
     const doc = await product.save();
     res.status(201).json(doc);
     // console.log(doc);
   } catch (error) {
     res.status(400).json(error);
-    console.log("create product error", error);
+    // console.log("create product error", error);
   }
 };
 
@@ -21,7 +21,7 @@ exports.fetchProductById = async (req,res)=>{
     // console.log("----------",id);
     try {
         const productbyId = await Product.findById(id); 
-        console.log(productbyId);
+        // console.log(productbyId);
         res.status(200).json(productbyId);
     } catch (error) {
         res.status(400).json(error);

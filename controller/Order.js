@@ -14,10 +14,10 @@ exports.createOrder = async (req, res)=>{
 // 'http://localhost:8080/orders/own'
 exports.fetchOrdersByUser = async (req,res)=>{
     const {id} = req.user;          // for req.query yeilds user id of which is passed in url
-    console.log('ha wala user---',req.user);
+    // console.log('ha wala user---',req.user);        // {id,items,totalprice,paymentMethod,etc}
     try {
         const order = await Order.find({user:id});
-        console.log('------order------',order);
+        // console.log('------order------',order);
         res.status(200).json(order);
     } catch (error) {
         res.status(400).json(error);
