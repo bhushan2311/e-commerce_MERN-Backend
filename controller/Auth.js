@@ -36,7 +36,7 @@ exports.createUser = async (req, res) => {
                 const token = jwt.sign(sanitizeUser(doc), SECRET_KEY);
                 // console.log('------------',categories);
                 res
-                  .cookie("jwt", token, {                     // added token in cookie which longs for 1 hour(3600000) for sending it to frontend
+                  .cookie("jwt", token, {                     // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
                     expires: new Date(Date.now() + 3600000),
                     httpOnly: true,
                   })
@@ -57,7 +57,7 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   res
-    .cookie("jwt", req.user.token, {            // added token in cookie which longs for 1 hour(3600000) for sending it to frontend
+    .cookie("jwt", req.user.token, {            // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
     })
@@ -65,8 +65,17 @@ exports.loginUser = async (req, res) => {
     .json(req.user.token);
 };
 
+exports.logout = async (req, res) => {
+  res.cookie("jwt", null, {            
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .sendStatus(200)
+};
+
 exports.checkAuth = async (req, res) => {
   if(res.json){
+    // console.log("Auth.js");     // jwt_payload: { id: '65ca426d9aa370aa20214410', iat: 1709135116 }
     res.status(200).json(req.user);
   }
   else{
