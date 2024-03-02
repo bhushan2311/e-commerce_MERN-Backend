@@ -41,14 +41,15 @@ exports.fetchAllProducts = async (req, res) => {
 //   console.log("------", req.query); // output-{category: 'smartphones', _sort:'rating', _order:'desc', _page:'1', _limit:'10}
 
 let totalProductsQuery = Product.find({});
-
+  // console.log("------ ",req.query.category);  // [smartphone, laptops]
+  // console.log("------ ",req.query.brand);     // [apple,samsung]
   if (req.query.category) {
-    queryy = queryy.find({ category: req.query.category });
-    totalProductsQuery = totalProductsQuery.find({ category: req.query.category });
+    queryy = queryy.find({ category:{$in:req.query.category.split(',')} });
+    totalProductsQuery = totalProductsQuery.find({ category: {$in:req.query.category.split(',')} });    // splits [smartphone, laptops] and gives both cateories after filter
   }
   if (req.query.brand) {
-    queryy = queryy.find({ brand: req.query.brand });
-    totalProductsQuery = totalProductsQuery.find({ brand: req.query.brand });
+    queryy = queryy.find({ brand:{$in:req.query.brand.split(',')} });
+    totalProductsQuery = totalProductsQuery.find({ brand: {$in:req.query.brand.split(',')} });
   }
   if (req.query._sort && req.query._order) {
     queryy = queryy.sort({ [req.query._sort]: req.query._order });
@@ -63,7 +64,8 @@ let totalProductsQuery = Product.find({});
     queryy = queryy.skip(pageSize * (page - 1)).limit(pageSize);
   }
 
-  
+  // after filter the queryy becomes like this
+  // http://localhost:8080/products?category=smartphones,laptops,fragrances&brand=Apple,Samsung,OPPO&_sort=price&_order=asc&_page=1&_limit=10&
   try {
     const docs = await queryy.exec();
     res.set('X-Total-Count', totalDocs);        // as we are expecting in frontend to send total count in 'X-Total-Count' header.
