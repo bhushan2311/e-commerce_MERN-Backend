@@ -2,7 +2,6 @@ const { User } = require("../model/User");
 const crypto = require("crypto");
 const { sanitizeUser } = require("../services/common");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = 'SECRETKEY';
 
 exports.createUser = async (req, res) => {
   try {
@@ -29,14 +28,13 @@ exports.createUser = async (req, res) => {
             const doc = await user.save();
 
             // to create the session (will call serializer)
-            req.login(sanitizeUser(doc), (err) => {
+            req.login(sanitizeUser(doc), (err) => {   // sanitizeUser(doc) passing to serilizer 
               if (err) {
                 res.status(400).json(err);
               } else {
-                const token = jwt.sign(sanitizeUser(doc), SECRET_KEY);
-                // console.log('------------',categories);
-                res
-                  .cookie("jwt", token, {                     // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
+                const token = jwt.sign(sanitizeUser(doc), process.env.JWT_SECRET_KEY);
+                // console.log('-----token-------', token);      // reaching here successfully when creating user
+                res.cookie("jwt", token, {                     // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
                     expires: new Date(Date.now() + 3600000),
                     httpOnly: true,
                   })
@@ -56,13 +54,12 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  res
-    .cookie("jwt", req.user.token, {            // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
+  res.cookie("jwt", req.user.token, {            // added token in cookie which longs for 1 hour(3600000ms) for sending it to frontend
       expires: new Date(Date.now() + 3600000),
       httpOnly: true,
     })
     .status(200)
-    .json(req.user.token);
+    .json(req.user.token);     // this req.user comes from serilizer called by localStrategy
 };
 
 exports.logout = async (req, res) => {

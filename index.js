@@ -28,9 +28,7 @@ const jwt = require("jsonwebtoken");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const cookieParser = require('cookie-parser');
-const { log } = require("console");
 
-const SECRET_KEY = "SECRETKEY";
 var opts = {};
 
 // opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();      // for postman we use bearer token
@@ -39,7 +37,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 // --------- middleware ------------
 server.use(cookieParser());
-// server.use(express.static('build copy'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
+server.use(express.static('build'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
 server.use(
   session({
     secret: "keyboard cat",
@@ -96,7 +94,7 @@ passport.use(
               });
             }
             const token = jwt.sign(sanitizeUser(user), process.env.JWT_SECRET_KEY);
-            done(null, {token}); // this will send to serelizer
+            done(null, {token, local:"local"}); // this will send to serelizer
           }
         );
       } catch (error) {
@@ -110,14 +108,16 @@ passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
-    //   console.log("jwt_payload:", jwt_payload);  // jwt_payload: { id: '65ca426d9aa370aa20214410', iat: 1709135116 }       
+      console.log("jwt_payload:", jwt_payload);  // jwt_payload: { id: '65ca426d9aa370aa20214410', iat: 1709135116 }       
       const user = await User.findById(jwt_payload.id);
       if (user) {
-        return done(null, sanitizeUser(user)); // this calls serializer
+        const userSanitize = sanitizeUser(user);
+        return done(null, userSanitize); // this calls serializer
       } else {
         return done(null, false);
       }
     } catch (error) {
+      console.log("jwt error", error);
       return done(error, false);
     }
   })
