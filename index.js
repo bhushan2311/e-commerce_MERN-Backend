@@ -15,6 +15,7 @@ const authRouter = require("./routes/Auth");
 const cartRouter = require("./routes/Cart");
 const orderRouter = require("./routes/Order");
 const { User } = require("./model/User");
+const path = require('path');
 
 const server = express();
 
@@ -37,7 +38,7 @@ opts.secretOrKey = process.env.JWT_SECRET_KEY;
 
 // --------- middleware ------------
 server.use(cookieParser());
-server.use(express.static('build'));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
+server.use(express.static(path.resolve(__dirname,'build')));               // to run frontend and backend on same server. To do this, in frontend it needs to run 'npm run build' script.
 server.use(
   session({
     secret: "keyboard cat",
