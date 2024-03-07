@@ -65,6 +65,9 @@ server.use("/auth", authRouter.router);
 server.use("/cart", isAuth(), cartRouter.router);
 server.use("/orders", isAuth(), orderRouter.router);
 
+// make react router work in case of other routes doesnt match
+server.get('*',(req,res)=> res.sendFile(path.resolve('build','index.html')));
+
 // ----------------------
 
 // Password Strategies 'local'
