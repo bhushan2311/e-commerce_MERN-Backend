@@ -17,6 +17,6 @@ exports.cookieExtractor = function(req){
     }
     // console.log("common.js -- ",token);
     // token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2E0MjZkOWFhMzcwYWEyMDIxNDQxMCIsImlhdCI6MTcwOTEzNTExNn0.upFTzCeGZuC3HmAgq7PqaakguVCx6n06uYWp35gIHnI";
-    token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2E0MjZkOWFhMzcwYWEyMDIxNDQxMCIsImlhdCI6MTcxMDM0ODYxMn0.oB-7MGqybC5nWFnorq6RpWUBN8SeXnruWmG_0BeMmms"
+    // token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2E0MjZkOWFhMzcwYWEyMDIxNDQxMCIsImlhdCI6MTcxMDM0ODYxMn0.oB-7MGqybC5nWFnorq6RpWUBN8SeXnruWmG_0BeMmms"
     return token;
 };
