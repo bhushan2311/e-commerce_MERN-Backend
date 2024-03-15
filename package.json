@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/bhushan2311/https-github.com-bhushan2311-e-commerce_MERN-Backend/issues"
   },
-  "homepage": "https://github.com/bhushan2311/https-github.com-bhushan2311-e-commerce_MERN-Backend#readme",
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
